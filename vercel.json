@@ -1,9 +1,0 @@
-{
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/dist",
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/index" },
-    { "source": "/messenger/(.*)", "destination": "/api/index" },
-    { "source": "/((?!api/|messenger/).*)", "destination": "/index.html" }
-  ]
-}
