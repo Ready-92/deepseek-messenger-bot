@@ -26,10 +26,24 @@ from config import (
     GEMINI_API_KEY,
     GEMINI_MODEL,
     MESSENGER_PAGE_ACCESS_TOKEN,
+    DISCORD_BOT_TOKEN,
 )
 from messenger_bot import router as messenger_router
+from discord_bot import start_discord_bot, stop_discord_bot
 
-app = FastAPI(title="DeepSeek Chat API", version="2.0.0")
+# ===== Lifespan =====
+import asyncio
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Khởi động / dừng Discord bot."""
+    if DISCORD_BOT_TOKEN:
+        asyncio.create_task(start_discord_bot())
+    yield
+    await stop_discord_bot()
+
+app = FastAPI(title="DeepSeek Chat API", version="2.1.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -455,7 +469,9 @@ async def root():
         "version": "2.1.0",
         "auth": bool(GOOGLE_CLIENT_ID),
         "messenger_bot": bool(MESSENGER_PAGE_ACCESS_TOKEN),
+        "discord_bot": bool(DISCORD_BOT_TOKEN),
     }
+
 
 if __name__ == "__main__":
     import uvicorn

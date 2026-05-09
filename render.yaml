@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: deepseek-messenger-bot
+    name: deepseek-chat-bot
     env: python
     buildCommand: pip install -r backend/requirements.txt
     startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
@@ -11,8 +11,28 @@ services:
         value: https://api.deepseek.com
       - key: MODEL_NAME
         value: deepseek-chat
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: VISION_PROVIDER
+        value: openai
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4o
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
       - key: MESSENGER_VERIFY_TOKEN
         value: deepseek_bot_verify_2026
       - key: MESSENGER_PAGE_ACCESS_TOKEN
         sync: false
+      - key: MESSENGER_APP_SECRET
+        sync: false
+      - key: DISCORD_BOT_TOKEN
+        sync: false
+      - key: DISCORD_COMMAND_PREFIX
+        value: "!"
     plan: free

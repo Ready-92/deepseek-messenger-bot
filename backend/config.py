@@ -28,5 +28,9 @@ MESSENGER_VERIFY_TOKEN = os.getenv("MESSENGER_VERIFY_TOKEN", "deepseek_bot_verif
 MESSENGER_PAGE_ACCESS_TOKEN = os.getenv("MESSENGER_PAGE_ACCESS_TOKEN", "")
 MESSENGER_APP_SECRET = os.getenv("MESSENGER_APP_SECRET", "")
 
+# Discord Bot
+DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN", "")
+DISCORD_COMMAND_PREFIX = os.getenv("DISCORD_COMMAND_PREFIX", "!")
+
 if not DEEPSEEK_API_KEY:
     raise ValueError("DEEPSEEK_API_KEY chưa được cấu hình. Vui lòng tạo file .env từ .env.example")
