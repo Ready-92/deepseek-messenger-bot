@@ -3,9 +3,10 @@ Messenger Bot - DeepSeek AI tích hợp Facebook Messenger
 Xử lý Webhook + Gọi DeepSeek API trả lời tin nhắn
 """
 import json
+import asyncio
 import hmac
 import hashlib
-import time
+import logging
 from typing import Optional
 
 import httpx
@@ -18,6 +19,8 @@ from config import (
     DEEPSEEK_BASE_URL,
     MODEL_NAME,
 )
+
+log = logging.getLogger("messenger_bot")
 
 router = APIRouter(prefix="/messenger", tags=["Messenger Bot"])
 
@@ -189,7 +192,7 @@ async def process_message(psid: str, message: dict) -> None:
     if not text:
         return
 
-    print(f"[Messenger] Tin nhắn từ {psid}: {text[:100]}")
+    log.info(f"Msg from {psid}: {text[:100]}")
 
     # Typing indicator
     await send_typing(psid, on=True)
@@ -229,7 +232,7 @@ async def process_message(psid: str, message: dict) -> None:
         await send_message(psid, f"{chunk}" if len(chunks) == 1 else f"📄 ({i+1}/{len(chunks)})\n{chunk}")
         if i < len(chunks) - 1:
             await send_typing(psid, on=True)
-            time.sleep(0.5)
+            await asyncio.sleep(0.5)
 
     await send_typing(psid, on=False)
 

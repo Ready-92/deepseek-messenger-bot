@@ -232,26 +232,13 @@ async def handle_message(bot: DeepSeekBot, message: discord.Message):
         await handle_dm_message(bot, message, content, channel_id)
         return
 
-    # Server channel: chỉ trả lời khi @mention hoặc reply bot
-    should_reply = False
+    # Server channel: tự động trả lời mọi tin nhắn
+    # Xóa @mention bot nếu có
     if bot.user in message.mentions:
-        should_reply = True
-        # Xóa mention khỏi nội dung
         content = content.replace(f"<@{bot.user.id}>", "").strip()
         if not content:
-            await message.reply("👋 Chào! Dùng `/chat <nội dung>` hoặc @mention + câu hỏi để chat với tôi.")
+            await message.reply("👋 Chào! Gửi câu hỏi để chat với tôi.")
             return
-
-    if message.reference and message.reference.message_id:
-        try:
-            ref_msg = await message.channel.fetch_message(message.reference.message_id)
-            if ref_msg.author.id == bot.user.id:
-                should_reply = True
-        except (discord.NotFound, discord.Forbidden):
-            pass
-
-    if not should_reply:
-        return
 
     async with message.channel.typing():
         reply = await call_deepseek(channel_id, content)
