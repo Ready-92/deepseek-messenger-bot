@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-title DeepSeek Chat App
+title DeepSeek Chat App - Backend & Discord Bot
 
 echo ========================================
 echo   DeepSeek Chat App - Khoi Dong
@@ -22,9 +22,14 @@ cd /d "%~dp0"
 echo [*] Kich hoat moi truong ao...
 call .venv\Scripts\activate.bat
 
-echo [*] Khoi dong Backend + Discord Bot...
+echo [*] Khoi dong Backend + Discord Bot trong cua so rieng...
 echo.
-start "" http://localhost:8000
-python backend\main.py
+
+:: Start backend trong cua so rieng (non-blocking)
+start "Backend Server" cmd /k python backend\main.py
+
+:: Doi backend khoi dong xong
+timeout /t 3 /nobreak
+echo [OK] Backend da khoi dong. Truy cap http://localhost:8000
 
 pause

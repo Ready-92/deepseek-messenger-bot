@@ -232,7 +232,7 @@ async def handle_message(bot: DeepSeekBot, message: discord.Message):
         await handle_dm_message(bot, message, content, channel_id)
         return
 
-    # Server channel: tự động trả lời mọi tin nhắn
+    # Server channel: trả lời ngay công khai
     # Xóa @mention bot nếu có
     if bot.user in message.mentions:
         content = content.replace(f"<@{bot.user.id}>", "").strip()
@@ -246,6 +246,11 @@ async def handle_message(bot: DeepSeekBot, message: discord.Message):
         await message.reply(chunks[0])
         for chunk in chunks[1:]:
             await message.channel.send(chunk)
+
+
+async def handle_server_message(bot: DeepSeekBot, message: discord.Message, content: str, channel_id: int):
+    """DEPRECATED - không dùng nữa"""
+    pass
 
 
 async def handle_dm_message(bot, message, content, channel_id):
